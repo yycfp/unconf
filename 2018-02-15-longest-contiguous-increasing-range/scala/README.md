@@ -15,3 +15,9 @@ Answer is `(3,8)`.
 If you have [sbt](https://www.scala-sbt.org/) installed, you can run the tests by `sbt test` from the `scala` folder.
 
 If you'd rather not install sbt, I created a [Scala Fiddle](https://scalafiddle.io/sf/wpqRL2J/0) where you can run and play with the code. The code in the repository is a little different in that it is more general; it uses the [Ordering trait (typeclass)](https://www.scala-lang.org/api/2.12.3/scala/math/Ordering.html) to support other types. I also extracted the partial function to better show you how the collect function works. I could have used `filter`, but I chose `collect` because I didn't need the entire tuple. Either one can work.
+
+## Using Map & Filter
+
+Some might find this a little easier to read. I replace the `zipWithIndex.collect` with a simple `for..yield`, which is just sugar for map and filter.
+
+![](remove-zip.png)
