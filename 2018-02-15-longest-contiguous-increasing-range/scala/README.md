@@ -12,4 +12,4 @@ The basic solution is as follows:
 
 Answer is `(3,8)`.
 
-You can run a play with the solution [here](https://scalafiddle.io/sf/wpqRL2J/0) if you don't want to download this code. The code in this repository is a little different in that it is more general; it uses the [Ordering trait (typeclass)] to support other types.(https://www.scala-lang.org/api/2.12.3/scala/math/Ordering.html) that's defined in the standard library. I also extracted the partial function to better show you how the collect function works. I could have used `filter`, but I chose `collect` because I didn't need the entire tuple.
+You can run a play with the solution [here](https://scalafiddle.io/sf/wpqRL2J/0) if you don't want to download this code. The code in this repository is a little different in that it is more general; it uses the [Ordering trait (typeclass)](https://www.scala-lang.org/api/2.12.3/scala/math/Ordering.html) to support other types. that's defined in the standard library. I also extracted the partial function to better show you how the collect function works. I could have used `filter`, but I chose `collect` because I didn't need the entire tuple.
