@@ -23,28 +23,4 @@ package object yycfp {
     } else None
   }
 
-  case class ListRange(left :Int, right: Int)
-  
-  def lionLongestRange(ls: List[Int]): ListRange = {
-    ls match {
-      case Nil => ListRange(0, 0)
-      case _::Nil => ListRange(0, 0)
-      case head::tail =>
-        val tailRange = lionLongestRange(tail)
-
-        if (head > tail.head) ListRange(tailRange.left + 1, tailRange.right + 1)
-        else {
-          if (tailRange.left == 0) ListRange(0, tailRange.right + 1)
-          else {
-            val subListRange = lionLongestRange(head::tail.take(tailRange.left))
-            if (subListRange.right - subListRange.left > tailRange.right - tailRange.left)
-              subListRange
-            else
-              ListRange(tailRange.left + 1, tailRange.right + 1)
-          }
-        }
-    }
-  }
-
-
 }
