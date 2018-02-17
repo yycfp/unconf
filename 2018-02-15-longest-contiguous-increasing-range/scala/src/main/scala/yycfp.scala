@@ -1,5 +1,3 @@
-import scala.annotation.tailrec
-
 package object yycfp {
 
   def longestContiguousIncreasingRange[T: Ordering](xs: Seq[T]): Option[(Int, Int)] = {
