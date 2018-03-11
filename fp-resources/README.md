@@ -9,7 +9,7 @@ Recently we've been asked to compile a list of learning resources for people jus
 
 ### Books
 * I highly recommend [The Red Book](https://www.manning.com/books/functional-programming-in-scala) by Paul Chiusano and Runar Bjarnason. It's not overly advanced, and no prior Scala knowledge is required as they take you through a journey on concepts and then explain how Scala can be used to implement.
-* If your doing Haskell, then [Learn YOU Haskell for the greater good](http://learnyouahaskell.com/chapters) is pretty darn useful.
+* If your doing Haskell, then [Learn You Haskell for the greater good](http://learnyouahaskell.com/chapters) is pretty darn useful.
 
 ### Blogs
 * [Runar's Blog](http://blog.higher-order.com/)
