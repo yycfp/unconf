@@ -1,0 +1,6 @@
+(jbuild_version 1)
+
+(executable
+ ((name    lgir)
+  (preprocess (pps (ppx_deriving.std)))
+  (libraries (core_kernel))))
