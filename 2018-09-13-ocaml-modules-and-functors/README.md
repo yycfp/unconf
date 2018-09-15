@@ -1,13 +1,13 @@
 Introduction
 ============
 
-This project was presented at the [Unconf (YYC . FP) Meetup](https://www.meetup.com/Functional-Programmers-YYC/) on September 13th 2018
+This project was presented at the [Unconf (YYC . FP) Meetup](https://www.meetup.com/Functional-Programmers-YYC/) on September 13th 2018.
 
-To run the examples in OCaml's REPL use
+To run the examples in OCaml's REPL use:
 
 ``` $ dune utop example<n> ```
 
-Where `<n>` is the example subfolder
+Where `<n>` is the example subfolder.
 
 Why OCaml modules and functors? 
 -------------------------------
@@ -50,7 +50,7 @@ utop # Example0.Result.(return 1 |> bind ~f:(fun x-> return (x + 10)) |> get_ok)
 OCaml functors - example1
 =========================
 
-Do you know the concept of Haskell functors?
+Do you know the concept of Haskell functors...?
 
 ```
 class Functor f where
@@ -58,14 +58,12 @@ class Functor f where
     (<$) :: a -> f b -> f a
 ```
 
-... Well, just forget about it. Functors are a different beast in OCaml!
-
-Functors are "functions" from modules to modules. See `example1`
+... well, just forget about it. Functors are a different beast in OCaml! Functors are "functions" from modules to modules. See `example1`
 
 Functors to extend functionality - example2
 ===========================================
 
-Functors can be used to extend a module functionality. Check out `example2`
+Functors can be used to extend a module functionality. Check out `example2`.
 
 Functors to extract a common pattern - example3
 ===============================================
@@ -77,9 +75,7 @@ Data.Sort](http://hackage.haskell.org/package/sort/docs/Data-Sort.html):
 
      sort: (Ord a) => [a] -> [a]
 
-Checkout `example3`
-         
-In OCaml, you have to be explicit about the `sort` function being used. For integers:
+Checkout `example3`. In OCaml, you have to be explicit about the `sort` function being used. For integers:
 
 ```
 utop # Example3.IntSortableList.sort [3;2;1];;
