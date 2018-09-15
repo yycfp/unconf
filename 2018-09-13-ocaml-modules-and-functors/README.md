@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This project was presented at the Unconf (YYC . FP) Meetup on September 13th, 2018
+This project was presented at the [Unconf (YYC . FP) Meetup](https://www.meetup.com/Functional-Programmers-YYC/) on September 13th 2018
 
 To run the examples in OCaml's REPL use
 
@@ -13,28 +13,27 @@ Why OCaml modules and functors?
 -------------------------------
 
 OCaml has some interesting and powerful features around its modules. I thought
-it would be interesting to share that with the FP Community in Calgary.
+it would be interesting to share that with the Functional Programming Community in Calgary.
 
-OCaml Modules - Example0
+OCaml Modules - example0
 ========================
 
-A module: a collection of definitions that are stored within a namespace
-
-Obtain the value inside SimpleModule
+A module is a collection of definitions that are stored within a namespace. See `example0`. 
+For example, obtaining the value inside SimpleModule
 
 ```
 utop # Example0.SimpleModule.value;;
 - : int = 1
 ```
 
-Or apply the function
+Or applying the `id` the function:
 
 ```
 utop # Example0.SimpleModule.id 10;;
 - : int = 10
 ```
 
-Using the Result type - note that it's type is abstract:
+Using the `Result` type. Note that its type is `<abstract>`:
 
 ```
 utop # Example0.Result.return 1;;
@@ -59,9 +58,9 @@ class Functor f where
     (<$) :: a -> f b -> f a
 ```
 
-Just forget about it. Functors are a different beast in OCaml.
+... Well, just forget about it. Functors are a different beast in OCaml!
 
-Functors are "functions" from modules to modules
+Functors are "functions" from modules to modules. See `example1`
 
 Functors to extend functionality - example2
 ===========================================
@@ -95,7 +94,7 @@ utop # Example3.StringSortableList.sort ["qwe";"asd";"zxc"];;
 ```
 
 The Downside is that you can't do ad-hoc polymorphism. The upside is that you
-are always about the type being used; you know what's being used where
+are always explicit about the type being used; you know what's being used where.
 
 Functors in the wild
 ====================
