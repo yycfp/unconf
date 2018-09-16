@@ -1,0 +1,4 @@
+(library
+   (name example2)
+   (wrapped false)
+   (libraries base))
