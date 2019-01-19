@@ -1,21 +1,7 @@
 # misc-topics
 
-Some small howtos and explanations that aren't big enough for separate
-projects. The files in the _src_ directory each contain a separate
-topic.
-At the moment there is
-
- - Gadts.hs
-
-   Generalised Algebraic data-types
- - TypeCalcs.hs
- 
-   Some examples for calculations with types and how to use the type
-   literals in the GHC.TypeLit module.
- - Singles.hs
- 
-   Some experiments to understand the singletons library and how to
-   use it with *Nat*.
+A couple of examples using GADTs in Haskell presented at the Unconf(YYC.FP)
+Meetup.
    
 # Using the Examples
 In order to run the examples a working installation of the *Glasgow Haskell
