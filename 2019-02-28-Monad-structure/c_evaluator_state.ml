@@ -1,5 +1,17 @@
 include A_simple_evaluator
 
+(* Adding state: how many divisions were made *)
+let count = ref 0
+          
+let rec eval': term -> int =
+  function
+  | Cons i -> i
+  | Div (ti, tj) ->
+     let i = eval' ti in
+     let j = eval' tj in
+     count := !count + 1;
+     i/j
+
 (* Adding state - e.g. how many division were made *)
 type ('a, 'b) state = 'b -> ('a * 'b)
 
