@@ -1,42 +1,42 @@
 include A_simple_evaluator
 
 (* Adding exceptions *)
-type 'a or_exception = Return of 'a | Except of string
+type 'a or_exception = Value of 'a | Except of string
 
-let rec eval_exception : term -> int or_exception =
+let rec eval : term -> int or_exception =
   function
-  | Cons i -> Return i
+  | Cons i -> Value i
   | Div (ti, tj) ->
-     match eval_exception ti with
+     match eval ti with
      | Except err -> Except err
-     | Return i ->
-        match eval_exception tj with
+     | Value i ->
+        match eval tj with
         | Except err -> Except err
-        | Return j -> 
+        | Value j -> 
            if j=0 then
              Except "Division by zero"
            else
-             Return (i/j)
+             Value (i/j)
 
 
-let (>!) : 'a or_exception -> ('a -> 'b or_exception) -> 'b or_exception = 
+let (>>=) : 'a or_exception -> ('a -> 'b or_exception) -> 'b or_exception = 
   fun ma f ->
   match ma with
-  | Return a -> f a
+  | Value a -> f a
   | e -> e
 
-let return_er a = Return a
+let unit a = Value a
                         
-let return_ee exn = Except exn
+let except exn = Except exn
            
 let rec eval_exception_m : term -> int or_exception =
   function
-  | Cons i -> Return i
+  | Cons i -> Value i
   | Div (ti, tj) ->
-     eval_exception_m ti >!
-       fun i -> eval_exception_m tj >!
+     eval_exception_m ti >>=
+       fun i -> eval_exception_m tj >>=
                   fun j -> if j=0 then
-                             return_ee "Division by zero"
+                             except "Division by zero"
                            else
-                             return_er (i/j)
+                             unit (i/j)
 
