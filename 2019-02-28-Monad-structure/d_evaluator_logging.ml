@@ -1,6 +1,6 @@
 open Printf
 
-include A_simple_evaluator
+type term = Cons of int | Div of (term * term)
 
 let rec eval' : term -> int  =
   function

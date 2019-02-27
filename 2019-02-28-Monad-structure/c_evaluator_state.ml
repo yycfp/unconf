@@ -1,4 +1,4 @@
-include A_simple_evaluator
+type term = Cons of int | Div of (term * term)
 
 (* Adding state: how many divisions were made *)
 let count = ref 0
