@@ -38,8 +38,9 @@ let rec eval_state_m : term -> (int, int) state =
   function
   | Cons i -> return_s i
   | Div (ti, tj) ->
-     eval_state_m ti >>=
-       fun i -> eval_state_m tj >>=
-                  fun j -> tick >>= fun () -> return_s (i/j) 
+     eval_state_m ti >>= fun i ->
+     eval_state_m tj >>= fun j ->
+     tick >>= fun () ->
+     return_s (i/j) 
                              
 
