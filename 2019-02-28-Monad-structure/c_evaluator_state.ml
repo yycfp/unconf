@@ -1,6 +1,8 @@
+(* Adding state: how many divisions were made *)
+
 type term = Cons of int | Div of (term * term)
 
-(* Adding state: how many divisions were made *)
+(* With side effects *)
 let count = ref 0
           
 let rec eval': term -> int =
@@ -12,7 +14,7 @@ let rec eval': term -> int =
      count := !count + 1;
      i/j
 
-(* Adding state - e.g. how many division were made *)
+(* Pure function *)
 type ('a, 'b) state = 'b -> ('a * 'b)
 
 let rec eval: term -> (int, int) state =
@@ -23,6 +25,7 @@ let rec eval: term -> (int, int) state =
                    let (j, s2) = eval tj s1 in
                    (i/j, s2+1)
 
+(* Now with Monads *)
 let (>>=) : ('a, 'b) state -> ('a -> ('c, 'b) state) -> ('c, 'b) state =
   fun ma f ->
   fun s ->

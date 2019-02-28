@@ -1,6 +1,6 @@
-type term = Cons of int | Div of (term * term)
-
 (* Adding exceptions *)
+
+type term = Cons of int | Div of (term * term)
 
 (* With side effects *)
 let rec eval' : term -> int =

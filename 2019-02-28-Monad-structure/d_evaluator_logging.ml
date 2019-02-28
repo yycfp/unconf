@@ -1,7 +1,10 @@
+(* Logging the different steps *)       
+
 open Printf
 
 type term = Cons of int | Div of (term * term)
 
+(* With side effects *)
 let rec eval' : term -> int  =
   function
   | Cons i ->
@@ -13,7 +16,7 @@ let rec eval' : term -> int  =
      printf "Div %d %d => %d\n" i j (i/j);
      i/j
 
-(* Adding logging - e.g. describe the operations being done *)
+(* Pure function *)
 type 'a output = 'a * string
 
 let rec eval : term -> int output =
@@ -25,6 +28,7 @@ let rec eval : term -> int output =
      (i/j, output_i ^ output_j ^ (sprintf "Div %d %d => %d\n" i j (i/j)))
 
 
+(* Now with Monads *)
 let (>>=) : 'a output -> ('a -> 'b output) -> 'b output =
   fun (a, out) f ->
   let (b, out1) = f a in
