@@ -2,7 +2,7 @@
 
  M >>= fun a -> n
 
-Exception:
+- Exception:
   eval_exception_m ti >>= fun i ->
   eval_exception_m tj >>= fun j ->
   if j=0 then
@@ -10,17 +10,17 @@ Exception:
   else
     unit (i/j)
 
-State:
-   eval_state_m ti >>= fun i ->
-   eval_state_m tj >>= fun j ->
-   tick >>= fun () ->
-   return_s (i/j) 
+- State:
+  eval_state_m ti >>= fun i ->
+  eval_state_m tj >>= fun j ->
+  tick >>= fun () ->
+  return_s (i/j) 
 
-Logging:
-   eval_output_m ti >>= fun i ->
-   eval_output_m tj >>= fun j ->
-   log (sprintf "Div %d %d => %d\n" i j (i/j)) >>= fun () ->
-   unit (i/j) 
+- Logging:
+  eval_output_m ti >>= fun i ->
+  eval_output_m tj >>= fun j ->
+  log (sprintf "Div %d %d => %d\n" i j (i/j)) >>= fun () ->
+  unit (i/j) 
 
 *)
 
@@ -50,10 +50,8 @@ let rec eval = function
 
 - Monad captures effect: state, generate output, raise an exception, etc
 
-
-- Monads capture "effects" (or computations) and compose them
-  - how do you model monads?
-
+- Monads capture "effects" (or computations) and compose them.
+  - how do you personally think about monads?
 
 - You can compose values, but also functions. E.g. the State Monad:
 
@@ -63,12 +61,16 @@ let rec eval = function
 
   'b -> ('a, 'b) -> ('a -> 'b -> ('c, 'b)) -> 'b -> ('c, 'b)
 
-- In your day to day, which other computations could be written as compositions?
-  - how do you find those use cases? Exception, Logging and State are well known uses
+- In your day to day, which computations could be written as compositions?
+  - Exception, Logging and State are well known uses. How do you find those use 
+    cases? 
   - There are other forms of composition: function composition, monoids
 
-- "the structuring methods presented here would have been 
-discovered without the insight afforded by category theory. But once discov-
-ered they are easily expressed without any reference to things categorical"
+- Interesting quote from the papre "the structuring methods presented here 
+  would have been discovered without the insight afforded by category theory. 
+  But once discovered they are easily expressed without any reference to things 
+  categorical"
+
+- Comment from the group: check out Kleisli triplets (or category)
 
  *)

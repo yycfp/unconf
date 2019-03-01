@@ -1,4 +1,4 @@
-(* Logging the different steps *)       
+(* Logging the different steps of the evaluation *)
 
 open Printf
 
@@ -34,7 +34,7 @@ let (>>=) : 'a output -> ('a -> 'b output) -> 'b output =
   let (b, out1) = f a in
   (b, out ^ out1)
 
-let unit a = (a, "")
+let return a = (a, "")
 
 let log msg = ((), msg)
                 
@@ -42,9 +42,9 @@ let rec eval_output_m : term -> int output =
   function
   | Cons i ->
      log (sprintf "Cons %d => %d\n" i i) >>= fun () ->
-     unit i
+     return i
   | Div (ti, tj) ->
      eval_output_m ti >>= fun i ->
      eval_output_m tj >>= fun j ->
      log (sprintf "Div %d %d => %d\n" i j (i/j)) >>= fun () ->
-     unit (i/j) 
+     return (i/j) 

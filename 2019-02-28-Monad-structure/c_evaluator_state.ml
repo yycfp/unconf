@@ -3,18 +3,21 @@
 type term = Cons of int | Div of (term * term)
 
 (* With side effects *)
-let count = ref 0
-          
-let rec eval': term -> int =
-  function
-  | Cons i -> i
-  | Div (ti, tj) ->
-     let i = eval' ti in
-     let j = eval' tj in
-     count := !count + 1;
-     i/j
 
-(* Pure function *)
+let eval' t =
+  let count = ref 0 in
+  let rec eval': term -> int =
+    function
+    | Cons i -> i
+    | Div (ti, tj) ->
+       let i = eval' ti in
+       let j = eval' tj in
+       count := !count + 1;
+       i/j in
+  (eval' t, !count)
+
+
+(* As a pure function *)
 type ('a, 'b) state = 'b -> ('a * 'b)
 
 let rec eval: term -> (int, int) state =
@@ -32,18 +35,18 @@ let (>>=) : ('a, 'b) state -> ('a -> ('c, 'b) state) -> ('c, 'b) state =
   let (a,s1) = ma s in
   f a s1
 
-let return_s a = fun s -> (a,s)
+let return a = fun s -> (a,s)
     
 let tick : (_, int) state =
   fun s -> ((), s+1)
 
 let rec eval_state_m : term -> (int, int) state =
   function
-  | Cons i -> return_s i
+  | Cons i -> return i
   | Div (ti, tj) ->
      eval_state_m ti >>= fun i ->
      eval_state_m tj >>= fun j ->
      tick >>= fun () ->
-     return_s (i/j) 
+     return (i/j) 
                              
 
