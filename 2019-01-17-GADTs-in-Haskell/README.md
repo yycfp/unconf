@@ -1,7 +1,29 @@
 # misc-topics
 
-A couple of examples using GADTs in Haskell presented at the Unconf(YYC.FP)
-Meetup.
+Some small howtos and explanations that aren't big enough for separate
+projects. The files in the _src_ directory each contain a separate
+topic.
+At the moment there is
+
+ - Gadts.hs
+
+   Generalised Algebraic data-types
+ - TypeCalcs.hs
+ 
+   Some examples for calculations with types and how to use the type
+   literals in the GHC.TypeLit module.
+ - Singles.hs
+ 
+   Some experiments to understand the singletons library and how to
+   use it with *Nat*.
+
+ - TypeLitX.hs
+
+   Some extended insights into the use of the GHC.TypeLit module.
+
+ - Utils.hs
+
+   Some examples of how common utilities would be implemented in Haskell.
    
 # Using the Examples
 In order to run the examples a working installation of the *Glasgow Haskell
@@ -110,3 +132,99 @@ about language extensions.
    Seems like 106 as of ghc-8.6.2, see
    https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/glasgow_exts.html,
    which includes a list of them.
+4. ## Debugging
+   Although there is a common perception that "if it compiles it works" holds
+   for Haskell code, there are still many roads to perdition. They can be
+   explored with the ghci debugging facilities documented in
+   https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/ghci.html#the-ghci-debugger
+   for the latest _ghc_.
+   
+   The closest to the popular `printf` procedure would be to take
+   subexpressions out
+   of their parents and run them separately in _ghci_ to see if they do what
+   they are supposed to do.
+   
+   Using _gdb_ on generated machine code is only recommended
+   for people who need to to test their resilience to insanity. Due to
+   lazy evaluation, there is little correspondence between anything that may
+   be construed as a variable and its value.
+
+   This is even a problem in the
+   native _ghci_ debugger, where values often have to be `:forced` to be
+   evaluated, a normal `:print` request often just reveals a number of
+   _thunks_ available at a certain step of the evaluation.
+   
+5. ## A Syntax Primer
+   In order to understand what's going on in the examples, here is a short
+   syntax primer for Haskell expressions. For more detail, see the cheat-sheet
+   for Haskell syntax at http://cheatsheet.codeslower.com/
+   ### Expressions and Functions
+   Everything starting with upper case is either type related, be it a type,
+   a type function or type constructor or a module name. A function is defined
+   by a type annotation followed by an equation.
+   ```haskell
+   functionname :: InputType -> OutputType
+   functionname arg = ...
+   ```
+   There are no keywords like _fun_ or _def_ because every definition in
+   Haskell is an equation and the question of whether it is a function
+   solely resides in the mind of the observer.
+   
+   The type annotation is often not required because the compiler can deduce
+   them from the function definition.
+   
+   For example, a squaring function might be defined as
+   ```haskell
+   square :: Double -> Double
+   square x = x*x
+   ```
+   For Haskell, this is unsatisfactory because the function type of `Double`
+   is too strict, the only thing that is needed is a type that allows
+   multiplication. This is where type classes, constraints and type variables
+   enter the fray:
+   ```haskell
+   square :: Num a => a -> a
+   square x = x*x
+   ```
+   In this example, `Num` is a predefined Haskelltype class providing `+`, `-`,
+   `*` and some conversion functions, `a` is a type variable and `Num a` is
+   a _constraint_ on the type variable. As a result, `square` works on any
+   type that is an _instance_ of `Num`. Instance examples are `Double`, 
+   `Integer`, `Int` and anything conceivable that may implement the
+   requirements of `Num`.
+
+   The signature ```Num a => a -> a``` is actually what the compiler
+   would have deduced from the use of x in the absence of the type annotation
+   ```Double -> Double```.
+   
+   In a true functional language, the concept of _arity_ becomes fuzzy because
+   a function can return another function so the number of arguments of a
+   function becomes debatable. A function like ```add``` can be considered
+   a function of two arguments returning a number or a function of one argument
+   returning a function that can take another argument.
+
+   Haskell's position is that every function takes one argument
+   and returns something, perhaps a function ready to take another
+   argument.
+   
+   Thus, a seemingly two argument function like `add` is a one argument
+   function which returns another function taking the second argument. This
+   means that, for example, ```add 1 ``` is a function that adds
+   _1_ to its argument so that ```add 1 2``` results in the expected
+   _3_. This concept is called _Currying_ and is FUNDAMENTAL to functional
+   programming, which is why there can be no parentheses around function
+   arguments. Code like ```f (x,y)``` does not indicate a function of two
+   arguments, rather ```f``` is a function of one argument taking a tuple
+   ```(x,y)``` as argument.
+   
+   ## Types
+   Types are introduced with the ```data``` keyword, type synonyms, somewhat
+   confusingly, with the ```type``` keyword and a hybrid of the two with
+   the ```newtype``` keyword. A ```newtype``` wraps a type in a way that
+   it almost becomes a type synonym for the wrapped type but is treated like a
+   separate type by the compiler.
+   ### Union Types
+   TODO
+   ### Product Types
+   TODO
+   
