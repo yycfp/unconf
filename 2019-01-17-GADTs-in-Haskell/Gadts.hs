@@ -13,6 +13,7 @@
 {-# LANGUAGE FlexibleContexts #-}  --dito
 {-# LANGUAGE TypeFamilies #-}  --dito
 {-# LANGUAGE PolyKinds #-} --using kind variables in type family Cmp
+{-# LANGUAGE InstanceSigs #-} --allows signatures in class instances
 {-# Options_GHC -fplugin GHC.TypeLits.Normalise #-}
 -- check
 -- http://mstksg.github.io/hmatrix/Numeric-LinearAlgebra-Static.html
@@ -102,7 +103,35 @@ data Set a where
 -- |But here we could also gain some flexibility with a phantom type
 data FSet t a where
   MkFSet :: Eq a => [a] -> FSet Plain a
-  MkFSetO :: Ord a => [a] -> FSet Sortable a
+  MkFSetS :: Ord a => [a] -> FSet Sortable a
+  MkFSetO :: Ord a => [a] -> FSet Ordered a -- don't export
+mkFSetO :: Ord a => [a] -> FSet Ordered a -- use this to get sorted set
+mkFSetO  = MkFSetO . sort
+-- Note: this is difficult because f :: a -> b but we need
+-- f::[a] -> [b]
+-- TODO : think about this:
+-- This should really be data FSet t (f a) where f is Foldable or at least
+-- a functor, then fmap::(f a) -> (f b) -> FSet t (f a) -> FSet t (f b)
+-- maybe there should be a special type class for f because we need membership
+-- unions, intersections and empty sets, maybe a Monoid with unions as mappend
+-- and membership and intersections in addition, perhaps it should be
+-- traversable as well.
+-- Let's try this: very flexible set: nothing prevents f to be of type [a] for
+-- some a, but how do we express sortability? With a type class
+class Sortables f where
+  sortA :: f -> f
+data VFSet t f where
+  MkVFSetP ::  f  -> VFSet Plain  f 
+  MkVFSetS ::  Sortables f => f  -> VFSet Sortable f
+
+-- alas, fmap needs a Sortable constraint here for the second branch, without
+-- Sortables in the constructor, it works.
+instance Functor (VFSet t) where
+  fmap fun (MkVFSetP x) = MkVFSetP (fun x)
+--fmap fun (MkVFSetS x) = MkVFSetS (fun x)
+--instance Functor (FSet t) where
+  --fmap f (MkFSet l) = MkFSet (f l)
+  --fmap f (MkFSetO l) = MkFSetO (f l)
 -- |The point: algorithms like searching, removing duplicates and others
 -- are more efficient on ordered data.
 -- These are the types for the different FSets.
@@ -122,11 +151,12 @@ class Searcher s a where
   search :: a -> s a -> Maybe a
 instance Searcher (FSet Plain) a where
   search e (MkFSet l) = find ( e == ) l
+-- This doesn't work anymore because MkFSetO is now Sortable but not ordered
 instance Searcher (FSet Ordered) a where
-  search e (MkFSetO l)= binarySearch e l
+   search e (MkFSetO l) = binarySearch e l 
 
-binarySearch :: (Foldable f, Ord a) => a -> f a -> Maybe a
-binarySearch = undefined
+binarySearch :: (Ord a) => a -> [a] -> Maybe a
+binarySearch e l = find (e == ) l --testing only
 -- |And then there is the whole issue of phantom types used to track state.
 -- For example input from some external source that needs to be processed
 -- in a number of stages, for example e-mail addresses, which need to be parsed
